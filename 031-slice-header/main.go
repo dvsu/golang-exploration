@@ -29,8 +29,8 @@ func main() {
 	fmt.Printf("ptr: %p Recheck original array: %s\n", &input, input)
 	fmt.Printf("%s\n", strings.Repeat("=", 80))
 
-	// however, if an element of an array is modified locally
-	// no copying occurs, so backing array and address remain the same
+	// however, if an element of an array is modified locally, it will remain pointing to
+	// the same array
 	input2 := collection{"four", "five", "six", "fifty", "thirty"}
 	fmt.Printf("ptr: %p Original array2: %s\n", &input2, input2)
 	input2[2] = "zero"
@@ -44,14 +44,14 @@ func main() {
 	// As the result, modifying a slice element inside
 	// a function still also modifies the original slice value.
 	input3 := scollection{"seven", "eight", "nine", "twenty"}
-	fmt.Printf("ptr: %p Original slice: %s\n", &input3, input3)
+	fmt.Printf("ptr (header): %p ptr (backing array): %p Original slice: %s\n", &input3, input3, input3)
 	processSlice(input3)
-	fmt.Printf("ptr: %p Recheck original slice: %s\n", &input3, input3)
+	fmt.Printf("ptr (header): %p ptr (backing array): %p Recheck original slice: %s\n", &input3, input3, input3)
 
 	// let's compare the size of array and slice after modification inside function
 	// note: do not use unsafe.Sizeof() in production code
-	fmt.Printf("Size of array after modification: %d\n", unsafe.Sizeof(input))
-	fmt.Printf("Size of slice after modification: %d\n", unsafe.Sizeof(input3))
+	fmt.Printf("Size of array after modification: %d bytes\n", unsafe.Sizeof(input))
+	fmt.Printf("Size of slice after modification: %d bytes\n", unsafe.Sizeof(input3))
 
 	var backingArraySize int
 
@@ -71,17 +71,17 @@ func main() {
 func processArray(input collection) {
 
 	input[2] = "five"
-	fmt.Printf("ptr: %p Array processed in function: %s\n", &input, input)
+	fmt.Printf("ptr addr: %p Array processed in function: %s\n", &input, input)
 }
 
 func processArray2(input collection) {
 
 	input[3] = "secret"
-	fmt.Printf("ptr: %p Array processed in second function: %s\n", &input, input)
+	fmt.Printf("ptr addr: %p Array processed in second function: %s\n", &input, input)
 }
 
 func processSlice(input scollection) {
 
 	input[2] = "ten"
-	fmt.Printf("ptr: %p Slice processed in function: %s\n", &input, input)
+	fmt.Printf("ptr (header): %p ptr (backing array): %p Slice processed in function: %s\n", &input, input, input)
 }

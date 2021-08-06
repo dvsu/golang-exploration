@@ -16,7 +16,7 @@ func main() {
 	// new slice whose elements are extracted from slicing existing slice,
 	// will still point to the same backing array, even both have different slice header.
 	// Different slice header = different pointer address
-	names2 := names[0:2]
+	names2 := names[1:3]
 
 	fmt.Printf("ptr:%p New slice: %s \n", &names2, names2)
 
@@ -47,7 +47,7 @@ func main() {
 	// alternative syntax
 	otherNames := append([]string{}, names...)
 
-	fmt.Printf("ptr:%p otherNames slice: %s\n", &otherNames, otherNames)
+	fmt.Printf("ptr (header):%p ptr (backing array): %p otherNames slice: %s\n", &otherNames, otherNames, otherNames)
 
 	// now let's change an element in 'names' slice and prove the 'newNames' and 'otherNames' slices
 	// are not modified
@@ -56,7 +56,30 @@ func main() {
 
 	fmt.Println("Change an element in 'names' slice")
 
-	fmt.Printf("ptr:%p Recheck Original slice: %s\n", &names, names)
-	fmt.Printf("ptr:%p Recheck newNames slice: %s\n", &newNames, newNames)
-	fmt.Printf("ptr:%p Recheck otherNames slice: %s\n", &otherNames, otherNames)
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck Original slice (names): %s\n", &names, names, names)
+	fmt.Println(`Backing array address of 'names2' slice is 2 bytes (16 bits) apart from 'names'. However, they still share the same backing array 
+because 'names2' [1:3] is a subset of 'name' [:], i.e. starts from the second element of 'name'`)
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck names2 slice: %s\n", &names2, names2, names2)
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck newNames slice: %s\n", &newNames, newNames, newNames)
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck otherNames slice: %s\n", &otherNames, otherNames, otherNames)
+
+	fmt.Println("Declare a new slice 'copiedNames' whose values are copied from 'names' slice")
+	copiedNames := names
+	fmt.Println("Reduce the capacity of 'copiedNames' slice to one")
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck copiedNames slice: %s\n", &copiedNames, copiedNames, copiedNames)
+	copiedNames = copiedNames[1:cap(copiedNames)]
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck copiedNames slice: %s\n", &copiedNames, copiedNames, copiedNames)
+	copiedNames = copiedNames[1:cap(copiedNames)]
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck copiedNames slice: %s\n", &copiedNames, copiedNames, copiedNames)
+	copiedNames = copiedNames[1:cap(copiedNames)]
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck copiedNames slice: %s\n", &copiedNames, copiedNames, copiedNames)
+	fmt.Println("Now check on the original 'names' slice")
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck Original slice (names): %s\n", &names, names, names)
+
+	names2 = append(names2, "Georgia")
+	fmt.Println("Append 'Georgia' as third element to 'names2' slice")
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck Original slice (names2): %s\n", &names2, names2, names2)
+	fmt.Println("Last element of 'names' slice is also changed to 'Georgia' because both share the same backing array")
+	fmt.Printf("ptr (header):%p ptr (backing array):%p Recheck Original slice (names): %s\n", &names, names, names)
+
 }
