@@ -9,9 +9,7 @@ func main() {
 	fmt.Printf("Length: %d Capacity: %d b.array %p 'presidents' %q\n", len(presidents), cap(presidents), presidents, presidents)
 
 	// append 3 elements to it
-	for _, s := range []string{"George Washington", "John Adams", "Thomas Jefferson"} {
-		presidents = append(presidents, s)
-	}
+	presidents = append(presidents, "George Washington", "John Adams", "Thomas Jefferson")
 
 	fmt.Printf("Length: %d Capacity: %d b.array %p 'presidents' %q\n", len(presidents), cap(presidents), presidents, presidents)
 	// the slice, however, has unexpected result ["", "", "", "", "", s, s, s]
@@ -20,9 +18,8 @@ func main() {
 	// recreate new string slice with capacity of 5 using make() and fix the previous problem
 	otherPresidents := make([]string, 0, 5)
 
-	for _, s := range []string{"George Washington", "John Adams", "Thomas Jefferson"} {
-		otherPresidents = append(otherPresidents, s)
-	}
+	otherPresidents = append(otherPresidents, "George Washington", "John Adams", "Thomas Jefferson")
+	
 
 	// then reveal the whole length
 	otherPresidents = otherPresidents[:5]
@@ -42,9 +39,8 @@ func main() {
 	copy(clone, otherPresidents[2:])
 	fmt.Printf("Length: %d Capacity: %d b.array %p 'clone' %q\n", len(clone), cap(clone), clone, clone)
 
-	for _, s := range otherPresidents[:2] {
-		clone = append(clone, s)
-	}
+	clone = append(clone, otherPresidents[:2]...)
+
 	fmt.Printf("Length: %d Capacity: %d b.array %p 'clone' %q\n", len(clone), cap(clone), clone, clone)
 
 	// slice the previous slice from the 2nd to 4th element inclusively, then append an element.
