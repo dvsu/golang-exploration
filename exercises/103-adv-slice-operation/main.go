@@ -51,7 +51,7 @@ func main() {
 	// ensure a new backing array is created
 	// change the 3rd element of previous slice.
 	// make sure it does not affect the content of new slice
-	selected := otherPresidents[1:4]
+	selected := otherPresidents[1:4:4]
 	selected = append(selected, "James Madison")
 	fmt.Printf("Length: %d Capacity: %d b.array %p 'selected' %q\n", len(selected), cap(selected), selected, selected)
 
