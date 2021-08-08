@@ -16,3 +16,6 @@
 
 # vscode
 .vscode
+
+# output files
+*.txt
