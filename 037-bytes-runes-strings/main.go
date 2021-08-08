@@ -52,9 +52,9 @@ func main() {
 
 	// remember this?
 	fmt.Printf("à UTF-8 encoded: %d bytes\n", len("à"))
-	fmt.Printf("à Count per string: %d byte\n", utf8.RuneCountInString("à"))
+	fmt.Printf("à String count: %d char\n", utf8.RuneCountInString("à"))
 
-	// special characters require 3 bytes (UTF-8 encoded)
+	// special characters require 2 bytes (or 3 bytes if UTF-8 encoded)
 	fmt.Printf("%-18s %-18s %-18s %-18s %-128s\n", "Literal", "Decimal", "Hexadecimal", "Binary", "Encoded")
 	fmt.Printf("%s\n", strings.Repeat("=", 60))
 	for c := 9984; c <= 10175; c++ {
@@ -62,8 +62,27 @@ func main() {
 	}
 
 	// let's compare again
-	fmt.Printf("✅ UTF-8 encoded: %d bytes\n", len("✅"))
-	fmt.Printf("✅ Count per string: %d byte\n", utf8.RuneCountInString("✅"))
+	fmt.Printf("✅ UTF-8 encoded: %d bytes\n", len("✅")) // 3 bytes
+	fmt.Printf("✅ String count: %d char\n", utf8.RuneCountInString("✅"))
 
-	// similarly emojis require 4 bytes (UTF-8 encoded)
+	// ✅ is equal to 9989. It requires 2 bytes to store it
+	// var a byte = '✅' // this will cause overflow because the size of the rune is larger than a byte
+	// but it can be stored as a 'rune' type
+
+	// var r rune = '✅'
+	// alternatively
+	r := '✅'
+	fmt.Printf("%c Decimal %[1]d Type %[1]T\n", r)
+
+	// similarly emojis require 3 bytes (or 4 bytes if UTF-8 encoded)
+	fmt.Printf("%-18s %-18s %-18s %-18s %-128s\n", "Literal", "Decimal", "Hexadecimal", "Binary", "Encoded")
+	fmt.Printf("%s\n", strings.Repeat("=", 60))
+	for c := 128512; c <= 128591; c++ {
+		fmt.Printf("%-18c %-18[1]d %-18[1]X %-18[1]b % -18X \n", c, string(c))
+	}
+
+	// a rune-type variable can store up to 4 bytes
+	// thus, storing an emoji also works
+	e := '😊'
+	fmt.Printf("%c Decimal %[1]d Type %[1]T\n", e) // int32 = 32 bits = 4 bytes!
 }
