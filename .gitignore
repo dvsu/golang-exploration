@@ -19,3 +19,6 @@
 
 # output files
 *.txt
+
+# json files
+*.json
