@@ -68,16 +68,16 @@ func main() {
 		},
 	}
 
-	out, err := json.Marshal(teams)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// out, err := json.Marshal(teams)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 
-	fmt.Println(string(out))
+	// fmt.Println(string(out))
 
 	// use MarchalIndent to prettyprint
-	out, err = json.MarshalIndent(teams, "", "  ")
+	out, err := json.MarshalIndent(teams, "", "  ")
 	if err != nil {
 		fmt.Println(err)
 		return
